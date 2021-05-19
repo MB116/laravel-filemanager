@@ -16,7 +16,7 @@ class ItemsController extends LfmController
      *
      * @return mixed
      */
-    public function getItems()
+    public function getItems(Request $request)
     {
         $currentPage = self::getCurrentPageFromRequest();
 
