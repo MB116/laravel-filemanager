@@ -2,6 +2,7 @@
 
 namespace UniSharp\LaravelFilemanager\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use UniSharp\LaravelFilemanager\Events\FileIsMoving;
 use UniSharp\LaravelFilemanager\Events\FileWasMoving;
@@ -20,7 +21,13 @@ class ItemsController extends LfmController
         $currentPage = self::getCurrentPageFromRequest();
 
         $perPage = $this->helper->getPaginationPerPage();
-        $items = array_merge($this->lfm->folders(), $this->lfm->files());
+        
+        $files = $this->lfm->files();
+        if ($request->sort_type == 'time') {
+            $files = array_reverse($files);
+        }
+
+        $items = array_merge($this->lfm->folders(), $files);
 
         return [
             'items' => array_map(function ($item) {
